@@ -2,7 +2,7 @@
 session_start();
 require 'db.php';
 
-// 🔹 THE FIX: Require Composer's autoloader for mPDF instead of TCPDF
+// 🔹 Require Composer's autoloader for mPDF
 require_once __DIR__ . '/vendor/autoload.php'; 
 
 // --- Minimal GET support: if ?id=.. is provided, load existing slip and set variables
@@ -157,14 +157,14 @@ if (!$is_get) {
 // ✅ Generate PDF using mPDF
 ob_clean();
 
-// 🔹 Initialize mPDF instead of TCPDF
+// 🔹 Initialize mPDF with wider margins for larger text
 $mpdf = new \Mpdf\Mpdf([
     'mode' => 'utf-8',
     'format' => 'A4-L',
-    'margin_left' => 5,
-    'margin_right' => 5,
+    'margin_left' => 10,
+    'margin_right' => 10,
     'margin_top' => 8,
-    'margin_bottom' => 5,
+    'margin_bottom' => 8,
     'default_font' => 'freeserif'
 ]);
 
@@ -172,39 +172,40 @@ $mpdf->SetCreator('NIELIT Bhubaneswar');
 $mpdf->SetAuthor('Kumar Dinesh Behera');
 $mpdf->SetTitle('Salary Slip - '.$data['name']);
 
-// 🔹 MAGIC SETTINGS FOR HINDI: This tells mPDF to correctly shape Devanagari characters
+// 🔹 MAGIC SETTINGS FOR HINDI
 $mpdf->autoScriptToLang = true;
 $mpdf->autoLangToFont = true;
 
 $logo = __DIR__ . '/assets/nb_logo.jpg';
 
+// 🔹 SCALED UP FONTS: Header text is much larger now
 $html = '
-<table width="100%" style="line-height:1;">
+<table width="100%" style="line-height:1.1;">
 <tr>
   <td width="80%" align="center" valign="middle">
-    <div style="font-size:17px; font-weight:bold; color:#003399; margin-bottom:3px; font-family: freesans, sans-serif;">
+    <div style="font-size:24px; font-weight:bold; color:#003399; margin-bottom:5px; font-family: freesans, sans-serif;">
       राष्ट्रीय इलेक्ट्रॉनिकी एवं सूचना प्रौद्योगिकी संस्थान, भुवनेश्वर
     </div>
-    <div style="font-size:12.3px; color:#003399; margin-bottom:0; line-height:1;">
+    <div style="font-size:16px; color:#003399; margin-bottom:2px;">
       <b>National Institute of Electronics & Information Technology, Bhubaneswar</b>
     </div>
-    <div style="font-size:9px; color:#444; line-height:1;">
+    <div style="font-size:11px; color:#444;">
       3rd Floor, North Side OCAC Tower, Doordarshan Colony, Acharya Vihar, Bhubaneswar - 751013<br>
       Ministry of Electronics and Information Technology (MeitY), Govt. of India
     </div>
   </td>
   <td width="20%" align="right" valign="middle">
-    <img src="'.$logo.'" width="72">
+    <img src="'.$logo.'" width="90">
   </td>
 </tr>
 </table>
-<hr style="border:0.7px solid #003399; margin-top:6px; margin-bottom:3px;">
-<h4 style="text-align:center; color:#003399; margin:1px 0 3px 0;">Pay Slip for the Month of '.htmlspecialchars($data['month_year']).'</h4>
+<hr style="border:0.8px solid #003399; margin-top:8px; margin-bottom:5px;">
+<h3 style="text-align:center; color:#003399; margin:4px 0 6px 0; font-size:18px;">Pay Slip for the Month of '.htmlspecialchars($data['month_year']).'</h3>
 ';
 
-// EMPLOYEE DETAILS
+// 🔹 SCALED UP FONTS: Employee Details (font-size: 12px, cellpadding: 4)
 $html .= '
-<table cellpadding="3" cellspacing="0" border="0" width="100%" style="font-size:9.5px;">
+<table cellpadding="4" cellspacing="0" border="0" width="100%" style="font-size:12px;">
 <tr><td width="25%">Name:</td><td width="25%"><b>'.htmlspecialchars($data['name']).'</b></td><td width="25%">Designation:</td><td width="25%">'.htmlspecialchars($data['designation']).'</td></tr>
 <tr><td>Posting:</td><td>'.htmlspecialchars($data['place_of_posting']).'</td><td>Wing/Section:</td><td>'.htmlspecialchars($data['wing_section']).'</td></tr>
 <tr><td>Pay Matrix & Cell:</td><td>'.htmlspecialchars($data['pay_matrix_cell']).'</td><td>PAN & Aadhar:</td><td>'.htmlspecialchars($data['pan_aadhar']).'</td></tr>
@@ -213,14 +214,15 @@ $html .= '
 <tr><td>Mode:</td><td>'.htmlspecialchars($data['mode_of_payment']).'</td><td>Date:</td><td>'.htmlspecialchars($data['date_of_payment']).'</td></tr>
 <tr><td>Days Present:</td><td>'.htmlspecialchars($data['days_present']).'</td></tr>
 </table>
-<hr style="border:0.4px solid #ccc;">
+<hr style="border:0.5px solid #ccc; margin-bottom: 5px;">
 ';
 
 // SALARY DETAILS TABLE
 function fmt($v){ return number_format(round($v), 0); }
 
+// 🔹 SCALED UP FONTS: Salary Table (font-size: 12px, cellpadding: 6)
 $html .= '
-<table cellpadding="5" cellspacing="0" border="1" width="100%" style="font-size:9.5px; border-collapse:collapse;">
+<table cellpadding="6" cellspacing="0" border="1" width="100%" style="font-size:12px; border-collapse:collapse;">
 <tr style="background-color:#f0f8ff; font-weight:bold;">
 <th width="35%">Earnings</th><th width="15%">Amount (₹)</th><th width="35%">Deductions</th><th width="15%">Amount (₹)</th>
 </tr>
@@ -231,17 +233,18 @@ $html .= '
 <tr><td>DA on TA</td><td>'.fmt($da_on_ta).'</td><td></td><td></td></tr>
 <tr><td>Other Earnings</td><td>'.fmt($oe).'</td><td></td><td></td></tr>
 <tr style="font-weight:bold;"><td>Gross Earnings</td><td>'.fmt($gross_salary).'</td><td>Gross Deductions</td><td>'.fmt($total_ded).'</td></tr>
-<tr style="font-size:11px; font-weight:bold; background-color:#e8f0ff;">
+<tr style="font-size:14px; font-weight:bold; background-color:#e8f0ff;">
   <td colspan="2">Net Salary (Take Home)</td><td colspan="2" align="right">₹ '.fmt($net_salary).'</td>
 </tr>
 </table>
 ';
 
+// 🔹 SCALED UP FONTS: Footer Text
 $html .= '
-<p style="margin-top:5px; font-size:9.5px;"><b>Amount in Words:</b> '.$amount_words.'</p>
-<p style="text-align:right; font-size:9px;">This is a system-generated document; no signature required.<br><b>For NIELIT Bhubaneswar</b></p>
-<hr style="border:0.6px solid #003399;">
-<p style="text-align:center; font-size:8.5px; color:#003399;">Website: https://nielit.gov.in/bhubaneswar</p>
+<p style="margin-top:10px; font-size:12px;"><b>Amount in Words:</b> '.$amount_words.'</p>
+<p style="text-align:right; font-size:11px;">This is a system-generated document; no signature required.<br><b>For NIELIT Bhubaneswar</b></p>
+<hr style="border:0.8px solid #003399;">
+<p style="text-align:center; font-size:11px; color:#003399;">Website: https://nielit.gov.in/bhubaneswar</p>
 ';
 
 // 🔹 Use mPDF write method
