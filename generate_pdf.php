@@ -171,7 +171,7 @@ $html = '
 <tr>
   <td width="80%" align="center" valign="middle">
     <div style="font-size:13px; color:#003399; margin-bottom:1px; line-height:1;">
-      <b>राष्ट्रीय इलेक्ट्रॉनिकी एवं सूचना प्रौद्योगिकी संस्थान, भुवनेश्वर</b>
+      <b style="font-family: freesans, sans-serif;">राष्ट्रीय इलेक्ट्रॉनिकी एवं सूचना प्रौद्योगिकी संस्थान, भुवनेश्वर</b>
     </div>
     <div style="font-size:12.3px; color:#003399; margin-bottom:0; line-height:1;">
       <b>National Institute of Electronics & Information Technology, Bhubaneswar</b>
@@ -186,7 +186,6 @@ $html = '
   </td>
 </tr>
 </table>
-<!-- moved line slightly down -->
 <hr style="border:0.7px solid #003399; margin-top:6px; margin-bottom:3px;">
 <h4 style="text-align:center; color:#003399; margin:1px 0 3px 0;">Pay Slip for the Month of '.htmlspecialchars($data['month_year']).'</h4>
 ';
