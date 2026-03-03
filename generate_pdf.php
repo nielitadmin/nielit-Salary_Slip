@@ -173,7 +173,7 @@ $html = '
 <tr>
   <td width="80%" align="center" valign="middle">
     <div style="margin-bottom:2px;">
-      <img src="'.$hindi_img.'" height="16">
+      <img src="'.$hindi_img.'" height="30">
     </div>
     <div style="font-size:12.3px; color:#003399; margin-bottom:0; line-height:1;">
       <b>National Institute of Electronics & Information Technology, Bhubaneswar</b>
