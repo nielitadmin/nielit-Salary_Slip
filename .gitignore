@@ -2,7 +2,6 @@
 db.php
 
 # Assets folder
-assets/
 vendor/
 
 # IDE and Editor files
