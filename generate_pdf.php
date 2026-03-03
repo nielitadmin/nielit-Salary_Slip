@@ -152,7 +152,7 @@ if (!$is_get) {
     }
 }
 
-// ✅ Generate PDF (exact same format as your original — nothing changed)
+// ✅ Generate PDF
 ob_clean();
 $pdf = new TCPDF('L', 'mm', 'A4', true, 'UTF-8', false);
 $pdf->SetCreator('NIELIT Bhubaneswar');
@@ -164,14 +164,16 @@ $pdf->setPrintFooter(false);
 $pdf->AddPage();
 $pdf->SetFont('freeserif', '', 10);
 
-// 🔹 ULTRA-COMPACT HEADER (with line moved slightly down)
+// 🔹 THE FIX: Using nb_text.png from the root directory
 $logo = 'assets/nb_logo.jpg';
+$hindi_img = 'nb_text.png'; 
+
 $html = '
 <table width="100%" style="line-height:1;">
 <tr>
   <td width="80%" align="center" valign="middle">
-    <div style="font-size:13px; color:#003399; margin-bottom:1px; line-height:1;">
-      <b style="font-family: freesans, sans-serif;">राष्ट्रीय इलेक्ट्रॉनिकी एवं सूचना प्रौद्योगिकी संस्थान, भुवनेश्वर</b>
+    <div style="margin-bottom:2px;">
+      <img src="'.$hindi_img.'" height="16">
     </div>
     <div style="font-size:12.3px; color:#003399; margin-bottom:0; line-height:1;">
       <b>National Institute of Electronics & Information Technology, Bhubaneswar</b>
