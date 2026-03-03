@@ -166,14 +166,14 @@ $pdf->SetFont('freeserif', '', 10);
 
 // 🔹 THE FIX: Using absolute server paths for TCPDF image rendering
 $logo = __DIR__ . '/assets/nb_logo.jpg';
-$hindi_img = __DIR__ . '/nb_text.png'; 
+$hindi_img = __DIR__ . '/assets/nb_text.png'; 
 
 $html = '
 <table width="100%" style="line-height:1;">
 <tr>
   <td width="80%" align="center" valign="middle">
     <div style="margin-bottom:2px;">
-      <img src="nb_text.png" height="16">
+      <img src="'.$hindi_img.'" height="16">
     </div>
     <div style="font-size:12.3px; color:#003399; margin-bottom:0; line-height:1;">
       <b>National Institute of Electronics & Information Technology, Bhubaneswar</b>
