@@ -164,9 +164,9 @@ $pdf->setPrintFooter(false);
 $pdf->AddPage();
 $pdf->SetFont('freeserif', '', 10);
 
-// 🔹 THE FIX: Using nb_text.png from the root directory
-$logo = 'assets/nb_logo.jpg';
-$hindi_img = 'nb_text.png'; 
+// 🔹 THE FIX: Using absolute server paths for TCPDF image rendering
+$logo = __DIR__ . '/assets/nb_logo.jpg';
+$hindi_img = __DIR__ . '/nb_text.png'; 
 
 $html = '
 <table width="100%" style="line-height:1;">
