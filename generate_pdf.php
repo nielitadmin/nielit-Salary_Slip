@@ -182,7 +182,7 @@ $html = '
 <table width="100%" style="line-height:1;">
 <tr>
   <td width="80%" align="center" valign="middle">
-    <div style="font-size:16px; font-weight:bold; color:#003399; margin-bottom:2px; font-family: freesans, sans-serif;">
+    <div style="font-size:17px; font-weight:bold; color:#003399; margin-bottom:3px; font-family: freesans, sans-serif;">
       राष्ट्रीय इलेक्ट्रॉनिकी एवं सूचना प्रौद्योगिकी संस्थान, भुवनेश्वर
     </div>
     <div style="font-size:12.3px; color:#003399; margin-bottom:0; line-height:1;">
