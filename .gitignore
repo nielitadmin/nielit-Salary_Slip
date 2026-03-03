@@ -1,0 +1,42 @@
+# Database configuration
+db.php
+
+# Assets folder
+assets/
+vendor/
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# PHP
+*.log
+*.cache
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Environment files
+.env
+.env.local
+
+# Composer (if you add it later)
+/vendor/composer/
+
+# Generated PDFs (optional - uncomment if you don't want to track generated PDFs)
+# *.pdf
+
+# Backup files
+*.bak
+*.backup
+*~
