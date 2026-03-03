@@ -1,7 +1,9 @@
 <?php
 session_start();
 require 'db.php';
-require_once __DIR__ . '/vendor/tcpdf/tcpdf.php';
+
+// 🔹 THE FIX: Require Composer's autoloader for mPDF instead of TCPDF
+require_once __DIR__ . '/vendor/autoload.php'; 
 
 // --- Minimal GET support: if ?id=.. is provided, load existing slip and set variables
 $is_get = false;
@@ -152,28 +154,36 @@ if (!$is_get) {
     }
 }
 
-// ✅ Generate PDF
+// ✅ Generate PDF using mPDF
 ob_clean();
-$pdf = new TCPDF('L', 'mm', 'A4', true, 'UTF-8', false);
-$pdf->SetCreator('NIELIT Bhubaneswar');
-$pdf->SetAuthor('Kumar Dinesh Behera');
-$pdf->SetTitle('Salary Slip - '.$data['name']);
-$pdf->SetMargins(5, 8, 5);
-$pdf->setPrintHeader(false);
-$pdf->setPrintFooter(false);
-$pdf->AddPage();
-$pdf->SetFont('freeserif', '', 10);
 
-// 🔹 THE FIX: Using absolute server paths for TCPDF image rendering
+// 🔹 Initialize mPDF instead of TCPDF
+$mpdf = new \Mpdf\Mpdf([
+    'mode' => 'utf-8',
+    'format' => 'A4-L',
+    'margin_left' => 5,
+    'margin_right' => 5,
+    'margin_top' => 8,
+    'margin_bottom' => 5,
+    'default_font' => 'freeserif'
+]);
+
+$mpdf->SetCreator('NIELIT Bhubaneswar');
+$mpdf->SetAuthor('Kumar Dinesh Behera');
+$mpdf->SetTitle('Salary Slip - '.$data['name']);
+
+// 🔹 MAGIC SETTINGS FOR HINDI: This tells mPDF to correctly shape Devanagari characters
+$mpdf->autoScriptToLang = true;
+$mpdf->autoLangToFont = true;
+
 $logo = __DIR__ . '/assets/nb_logo.jpg';
-$hindi_img = __DIR__ . '/assets/nb_text.png'; 
 
 $html = '
 <table width="100%" style="line-height:1;">
 <tr>
   <td width="80%" align="center" valign="middle">
-    <div style="margin-bottom:2px;">
-      <img src="'.$hindi_img.'" height="30">
+    <div style="font-size:16px; font-weight:bold; color:#003399; margin-bottom:2px; font-family: freesans, sans-serif;">
+      राष्ट्रीय इलेक्ट्रॉनिकी एवं सूचना प्रौद्योगिकी संस्थान, भुवनेश्वर
     </div>
     <div style="font-size:12.3px; color:#003399; margin-bottom:0; line-height:1;">
       <b>National Institute of Electronics & Information Technology, Bhubaneswar</b>
@@ -234,7 +244,10 @@ $html .= '
 <p style="text-align:center; font-size:8.5px; color:#003399;">Website: https://nielit.gov.in/bhubaneswar</p>
 ';
 
-$pdf->writeHTML($html, true, false, true, false, '');
-$pdf->Output('SalarySlip_'.$data['name'].'_'.$data['month_year'].'.pdf', 'I');
+// 🔹 Use mPDF write method
+$mpdf->WriteHTML($html);
+
+// 🔹 Output the PDF
+$mpdf->Output('SalarySlip_'.$data['name'].'_'.$data['month_year'].'.pdf', \Mpdf\Output\Destination::INLINE);
 exit;
 ?>
